@@ -1,0 +1,221 @@
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script> -->
+
+
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('/user/assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Wishlist</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+
+
+    <div class="page-content">
+        <div class="container">
+            <% if (wishlist.length> 0) { %>
+                <table id="wishlist-table" class="table table-wishlist table-mobile">
+                    <!-- <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Stock Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead> -->
+
+                    <tbody>
+
+                        <% for( let i=0; i < wishlist.length; i++ ) { %>
+                            <tr id="wishlist-card-<%= wishlist[i].product._id %>">
+                                <td class="product-col">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="#">
+                                                <img src="/uploads/product-images/<%= wishlist[i].product.image[0] %>"
+                                                    style="height: 7rem; " alt="Product image">
+                                            </a>
+                                        </figure>
+
+                                        <h3 class="product-title">
+                                            <a href="#">
+                                                <%= wishlist[i].product.product_name %>
+                                            </a>
+                                        </h3><!-- End .product-title -->
+                                    </div><!-- End .product -->
+                                </td>
+                                <td class="price-col">₹<%= wishlist[i].product.product_price %>
+                                </td>
+                                <!-- <td class="stock-col"><span class="in-stock">In stock</span></td> -->
+
+                                <% if (!wishlist[i].isInCart) { %>
+                                    <td class="action-col">
+                                        <button class="btn btn-block btn-outline-primary-2 add-product"
+                                            style="width: 20rem; margin-right: 2rem;"
+                                            data-value="<%= wishlist[i].product._id %>">Add to
+                                            Cart</button>
+                                    </td>
+                                    <% }else{ %>
+                                        <td class="action-col">
+                                            <button class="btn btn-block btn-outline-primary-2 "
+                                                style="width: 20rem; margin-right: 2rem;"><a href="/cart">View in
+                                                    Cart</a></button>
+                                        </td>
+                                        <% } %>
+
+
+                                            <!-- <td class="action-col">
+                                    <button onclick="removeFromWishList('<%= wishlist[i].product._id %>')" class="btn btn-block btn-outline-primary-2" style="width: 20rem;">Remove from Wishlist</button>
+                                </td> -->
+                                            <td class="action-col">
+                                                <button data-value="<%= wishlist[i].product._id %>"
+                                                    class="btn btn-block removefromwishlist btn-outline-primary-2"
+                                                    style="width: 20rem;">Remove from Wishlist</button>
+                                            </td>
+                                            <!-- <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td> -->
+                            </tr>
+                            <% } %>
+
+                    </tbody>
+                </table><!-- End .table table-wishlist -->
+                <% } %>
+
+
+                    <% if (wishlist.length===0) { %>
+                        <h1 id="wishlist-empty-message" style="margin-top: 5rem; margin-bottom: -2rem;">Wishlist is
+                            Empty</h1>
+                            <br>
+                            <h3>Please add items to the wishlist</h3>
+					<a class="btn btn-primary" href="/productPage" role="button">+ Add Items</a>
+                        <% } %>
+
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.add-product').click(function (e) {
+            e.preventDefault()
+            const prodId = $(this).data('value')
+            console.log('clicked', prodId)
+            $.ajax({
+                url: '/add-to-cart/' + prodId,
+                type: 'get'
+            })
+                .done((res) => {
+                    console.log(res);
+
+                    swal("successfull", `${res.message}`, "success")
+                        .then(() => {
+                            location.reload()
+                        })
+                })
+                .fail((err) => {
+                    console.log(err);
+                })
+        })
+    })
+
+
+    //     function removeFromWishList(productId) {
+    //     console.log("clickedeeeeeeeiiiiiiiiii", productId);
+    //     $.ajax({
+    //         url: '/removeFromWishlist',
+    //         type: 'post',
+    //         data: {
+    //             productId: productId
+    //         }
+    //     })
+    //     .done((res) => {
+    //         iziToast.success({
+    //             title: 'OK',
+    //             message: `${res.message}`,
+    //             position: 'topRight',
+    //             onOpening: function (instance, toast) {
+    //                 toast.style.top = '80px';
+    //             }
+    //         });
+
+    //         $('#wishlist-card-' + productId).remove();
+    //         document.getElementById('wishlistCount').innerHTML = `${res.wishlistCount}`;
+    //         console.log(res);
+
+    //         if (res.wishlistCount === 0) {
+    //             $('#wishlist-table').hide();
+    //             $('#wishlist-empty-message').show();
+    //         }
+
+
+    //         window.location.reload();
+    //     })
+    //     .fail((error) => {
+    //         console.log(error);
+    //     });
+    // }
+
+
+
+
+    $(document).ready(function () {
+  $('.removefromwishlist').click(function (e) {
+    e.preventDefault();
+    const prodId = $(this).data('value');
+
+    // Show a confirmation prompt
+    swal({
+      title: "Are you sure?",
+      text: "Once removed, you cannot undo this action.",
+      icon: "warning",
+      buttons: ["Cancel", "Remove"],
+      dangerMode: true,
+    }).then((confirmRemove) => {
+      if (confirmRemove) {
+        // User confirmed removal
+        console.log('clicked', prodId);
+        $.ajax({
+          url: '/removeFromWishlist/' + prodId,
+          type: 'post',
+          data: {
+            productId: prodId
+          }
+        })
+          .done((res) => {
+            console.log(res);
+
+            swal("Success", `${res.message}`, "success")
+              .then(() => {
+                location.reload();
+              });
+          })
+          .fail((err) => {
+            console.log(err);
+          });
+      } else {
+        // User canceled removal
+        console.log('Removal canceled');
+      }
+    });
+  });
+});
+
+
+
+</script>

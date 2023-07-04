@@ -1,0 +1,241 @@
+
+
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container d-flex align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Default</li>
+            </ol>
+            <%# 
+            <nav class="product-pager ml-auto" aria-label="Product">
+                <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
+                    <i class="icon-angle-left"></i>
+                    <span>Prev</span>
+                </a>
+
+                <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
+                    <span>Next</span>
+                    <i class="icon-angle-right"></i>
+                </a>
+            </nav><!-- End .pager-nav -->
+             %>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container">
+            <div class="product-details-top">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-gallery product-gallery-vertical">
+                            <div class="row">
+                                <figure class="product-main-image">
+                                    <img id="main_product_image" src="/uploads/product-images/<%= product.image[0] %>" data-zoom-image="/uploads/product-images/<%= product.image[0] %>" alt="product image">
+
+                                    <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                        <i class="icon-arrows"></i>
+                                    </a>
+                                </figure><!-- End .product-main-image -->
+
+                                
+
+                                <div id="product-zoom-gallery" class="product-image-gallery">
+                                    <a class="product-gallery-item active" href="#" data-image="/uploads/product-images/<%= product.image[0] %>" data-zoom-image="/uploads/product-images/<%= product.image[0] %>">
+                                        <img src="/uploads/product-images/<%= product.image[0] %>" alt="product side">
+                                    </a>
+
+                                    <a class="product-gallery-item" href="#" data-image="/uploads/product-images/<%= product.image[1] %>" data-zoom-image="/uploads/product-images/<%= product.image[1] %>">
+                                        <img src="/uploads/product-images/<%= product.image[1] %>" alt="product cross">
+                                    </a>
+
+                                    <a class="product-gallery-item" href="#" data-image="/uploads/product-images/<%= product.image[2] %>" data-zoom-image="/uploads/product-images/<%= product.image[2] %>">
+                                        <img src="/uploads/product-images/<%= product.image[2] %>" alt="product with model">
+                                    </a>
+
+                                    <a class="product-gallery-item" href="#" data-image="/uploads/product-images/<%= product.image[3] %>" data-zoom-image="/uploads/product-images/<%= product.image[3] %>">
+                                        <img src="/uploads/product-images/<%= product.image[3] %>" alt="product back">
+                                    </a>
+                                </div><!-- End .product-image-gallery -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product-gallery -->
+                    </div><!-- End .col-md-6 -->
+
+                    <div class="col-md-6">
+                        <div class="product-details">
+                            <h1 class="product-title"><%= product.product_name %></h1><!-- End .product-title -->
+
+                           
+
+                            <div class="product-price">
+                                ₹<%= product.product_price %>
+                            </div><!-- End .product-price -->
+
+                            <div class="product-content">
+                                <p><%= product.product_description %></p>
+                            </div><!-- End .product-content -->
+
+                            
+                            <%# 
+                            <div class="details-filter-row details-row-size">
+                                <label for="size">Size:</label>
+                                <div class="select-custom">
+                                    <select name="size" id="size" class="form-control">
+                                        <option value="#" selected="selected">Select a size</option>
+                                        <option value="s">Small</option>
+                                        <option value="m">Medium</option>
+                                        <option value="l">Large</option>
+                                        <option value="xl">Extra Large</option>
+                                    </select>
+                                </div><!-- End .select-custom -->
+
+                                
+                            </div><!-- End .details-filter-row -->
+                            %>
+                            
+                            
+
+                            <div class="product-details-action">
+                                <% if (! product.isInCart) { %>
+                                 <% if (loginStatus) { %>
+                                    <div class="details-action-col">
+                                        <a href="" data-value="<%= product._id %>" class="btn-product add-product btn-cart"><span>add to cart</span></a>
+                                          </div><!-- End .details-action-col -->
+                                 <% }else{ %>
+
+                                    <div class="details-action-col">
+                                        <a href="/login" class="btn-product btn-cart"><span>add to cart</span></a>
+                                          </div><!-- End .details-action-col -->
+          
+                                    <% } %>
+                                <% }else{ %>
+                                <div class="details-action-col">
+                              <a href="/cart" class="btn-product btn-cart"><span>view in cart</span></a>
+                                </div><!-- End .details-action-col -->
+                                <% } %>
+
+
+                                <% if (! product.isInWishlist) { %>
+                                    <% if (loginStatus) { %>
+                                
+                                        <div class="btn-wrap">
+                                            <a href="#"  data-value="<%= product._id %>" style="margin-left: 2rem; height: 4rem;" class="btn btn-outline-primary btn-rounded btn-product add-productToWishlist btn-wishlist">Add to Wishlist</a>
+                                        </div><!-- End .btn-wrap -->
+
+                                <% }else{ %>
+                                    <div class="btn-wrap">
+                                        <a href="/login" style="margin-left: 2rem; height: 4rem;" class="btn btn-outline-primary btn-rounded btn-product btn-wishlist">Add to Wishlist</a>
+                                    </div><!-- End .btn-wrap -->
+                                    <% } %>
+                                    <% }else{ %>
+                                        <div class="btn-wrap">
+                                            <a href="/view-wishlist" style="margin-left: 2rem; height: 4rem;" class="btn btn-outline-primary btn-rounded btn-product btn-wishlist">Remove from Wishlist</a>
+                                        </div><!-- End .btn-wrap -->
+                                        <% } %>
+                            </div><!-- End .product-details-action -->
+                            
+                               
+                            
+
+                            
+                        </div><!-- End .product-details -->
+                    </div><!-- End .col-md-6 -->
+                </div><!-- End .row -->
+            </div><!-- End .product-details-top -->
+
+            
+
+            
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+<script>
+    $(document).ready(function() {
+        let mainProductImage = $("#main_product_image");
+        let productZoomGallery = $("#product-zoom-gallery");
+
+        mainProductImage.elevateZoom({
+            responsive: true,
+            zoomWindowWidth: 300,
+            zoomWindowHeight: 300,
+            cursor: "crosshair"
+        });
+
+        productZoomGallery.on("click", ".product-gallery-item", function(e) {
+            e.preventDefault();
+            let zoomImage = $(this).data("zoom-image");
+            mainProductImage.attr("src", zoomImage);
+            mainProductImage.data("zoom-image", zoomImage);
+            $(".zoomContainer").remove(); // Remove the old zoom container
+            mainProductImage.elevateZoom({
+                responsive: true,
+                zoomWindowWidth: 300,
+                zoomWindowHeight: 300,
+                cursor: "crosshair"
+            });
+            $(".product-gallery-item").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.add-product').click(function (e) {
+            e.preventDefault()
+            const prodId = $(this).data('value')
+            console.log('clicked', prodId)
+            $.ajax({
+                url: '/add-to-cart/' + prodId,
+                type: 'get'
+            })
+                .done((res) => {
+                    console.log(res);
+                    
+                    swal("successfull", `${res.message}`, "success")
+                        .then(() => {
+                            location.reload()
+                        })
+                })
+                .fail((err) => {
+                    console.log(err);
+                })
+        })
+    })
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.add-productToWishlist').click(function (e) {
+            e.preventDefault();
+            const productId = $(this).data('value');
+            console.log("clicked");
+            console.log("hjjjjjjjjjj", productId);
+            $.ajax({
+                url: '/wishlist',
+                type: 'post',
+                data: { productId: productId }
+            })
+                .done((res) => {
+                    console.log(res.message);
+                    swal("successfull", `${res.message}`, "success")
+                        .then(() => {
+                            location.reload()
+                        })
+                })
+                .fail((err) => {
+                    console.log(err);
+                })
+        })
+    })
+
+
+</script>
+

@@ -1,0 +1,131 @@
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List </h2>
+            
+        </div>
+        
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <% if (!allOrders.length) { %>
+                 <h1>No Orders Yet</h1>
+                <% } else { %>
+
+                <table class="table table-hover" id="orderTable">
+                    <thead>
+                        <tr>
+                            <th>ORDER ID</th>
+                            <th scope="col">USER NAME</th>
+                            <th scope="col">DATE</th>
+                            <th scope="col">AMOUNT</th>
+                            <th scope="col">PAYMENT TYPE</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col"> CHANGE STATUS</th>
+                            <th scope="col"> VIEW DETAILS </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for( let i = 0; i < allOrders.length; i++ ) { %>
+                            <tr>
+                                <td  width="10%"><%= allOrders[i]._id %></td>
+                                <td  width="8%"><%= allOrders[i].userOrderDetails[0].name %> </td>
+                                <td  width="15%"><%= allOrders[i].formattedDateTime %></td>
+                                <td  width="7%"><%= allOrders[i].totalInrAmount %></td>
+                                <td  width="7%"><%= allOrders[i].paymentMethod %></td>
+                                <td width="7%">
+                                    <% if (allOrders[i].orderStatus == 'pending') { %>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-warning"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'processing') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-secondary"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'confirmed') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-dark"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'shipped') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-info"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'outForDelivery') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-warning"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'delivered') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-success"><%= allOrders[i].orderStatus %></span>
+                                    <% } else if (allOrders[i].orderStatus == 'cancelPending') {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-warning"><%= allOrders[i].orderStatus %></span>
+                                    <% } else {%>
+                                        <span id="status<%= allOrders[i]._id %>" class="badge rounded-pill alert-danger"><%= allOrders[i].orderStatus %></span>
+                                    <% } %>
+                                </td>
+
+                                <td width="10%">
+                                    <% if (allOrders[i].orderStatus == 'pending') { %>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','processing','confirmed')" class="btn btn-outline-primary rounded font-sm">processing</a>
+                                    <% } else if (allOrders[i].orderStatus == 'processing') {%>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','confirmed','shipped')" class="btn btn-outline-primary rounded font-sm">confirmed</a>
+                                    <% } else if (allOrders[i].orderStatus == 'confirmed') {%>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','shipped','outForDelivery')" class="btn btn-outline-primary rounded font-sm">shipped</a>
+                                    <% } else if (allOrders[i].orderStatus == 'shipped') {%>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','outForDelivery','delivered')" class="btn  btn-outline-primary rounded font-sm">out for delivery</a>
+                                    <% } else if (allOrders[i].orderStatus == 'outForDelivery') {%>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','delivered','d-none')" class="btn btn-outline-primary rounded font-sm">delivered</a>
+                                    <% } else if (allOrders[i].orderStatus == 'return pending') {%>
+                                        <a id="changeStatus<%= allOrders[i]._id %>" onclick="changeOrderStatus('<%= allOrders[i]._id %>','returned','d-none')" class="btn btn-outline-primary rounded font-sm">Approve Return</a>
+                                    <% } %>
+                                </td>
+
+                                <td width="10%">
+                                    <a href="/admin/order-details/<%= allOrders[i]._id %>" class="btn btn-md rounded font-sm">Details</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <% } %>
+
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+
+<script>
+    function changeOrderStatus(orderId,status,nextButtonValue){
+        console.log(orderId);
+        console.log(status);
+
+        // let buttonId='changeStatus'+orderId;
+        // let statusId='status'+orderId;
+        swal('Do you want to change the order Status',{
+                buttons:["No","Yes"]
+        })
+        .then((res)=>{
+            if(res){
+                $.ajax({
+                    url:'/admin/order-status',
+                    type:'post',
+                    data:{
+                        orderId:orderId,
+                        status:status
+                    }
+                })
+                .done((res)=>{
+                    if(res){
+                        if(!res.error){
+                        
+                            window.location.reload();
+                            // const a = document.getElementById("status"+orderId)
+                            // a.innerHTML=status
+                            // document.getElementById(buttonId).innerHtml=nextButtonValue
+
+                        }
+                    }
+
+                })
+                .fail((err)=>{
+                    console.log(err);
+                })
+            }
+                    
+        })
+                   
+        
+    }
+</script>

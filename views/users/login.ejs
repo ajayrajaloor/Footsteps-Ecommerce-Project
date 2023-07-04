@@ -1,0 +1,123 @@
+
+
+<main class="main">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    
+
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"style="background-image: url('/user/assets/images/backgrounds/login-bg.jpg')">
+        <div class="container">
+            <div class="form-box " style="border-radius: 20px; height: 55rem;">
+                <div class="form-tab">
+                    <ul class="nav nav-pills nav-fill" role="tablist">
+
+                        <li class="nav-item">
+                            <a class="nav-link active " id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="true">Sign In</a>
+                        </li>
+                    </ul>
+
+                    <br>
+                   
+
+                    <div class="text-center bg-white" >
+                        <span class="text-danger d-none" style="font-size: 17px; margin-left: 10px;" id="loginError"></span>
+                      </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+                            <form action="/login" id="loginPost">
+                                <div class="form-group">
+                                    <!-- <label for="singin-email-2">Username or email address *</label> -->
+                                    <input type="text" class="form-control" id="singin-email-2" name="email" placeholder="Email Address *" required>
+                                </div><!-- End .form-group -->
+<br>
+                                <div class="form-group">
+                                    <!-- <label for="singin-password-2">Password *</label> -->
+                                    <input type="password" class="form-control" id="singin-password-2" name="password" placeholder="Password" required>
+                                </div><!-- End .form-group -->
+                              
+                                <div class="form-footer" >
+                                    <button type="submit" class="btn btn-outline-primary-2" >
+                                        <span>LOG IN</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+
+                                    <!-- <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="signin-remember-2">
+                                        <label class="custom-control-label" for="signin-remember-2">Remember Me</label>
+                                    </div>End .custom-checkbox -->
+
+                                    <a href="/forgot-password" class="forgot-link" style="color: blue;">Forgot Password?</a>
+                                </div><!-- End .form-footer -->
+                                <!-- <br> -->
+                                <!-- <div style="text-align: center;">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>Log In with OTP</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+                            </div> -->
+                            
+                            </form>
+                            <div class="form-choice">
+                                <p class="text-center">or</p>
+                                    <a href="/otp-login" class="btn btn-outline-primary" style="width:100%;" id="specialButton">Login with OTP</a>
+                                <br>
+                                <br>
+                                <%# 
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <a href="#" class="btn btn-login btn-g">
+                                            <i class="icon-google"></i>
+                                            Login With Google
+                                        </a>
+                                    </div><!-- End .col-6 -->
+                                    <div class="col-sm-6">
+                                        <a href="#" class="btn btn-login btn-f">
+                                            <i class="icon-facebook-f"></i>
+                                            Login With Facebook
+                                        </a>
+                                    </div><!-- End .col-6 -->
+                                </div><!-- End .row -->
+                                 %>
+                            </div><!-- End .form-choice -->
+                        </div><!-- .End .tab-pane -->
+
+                        <div class="text-center" style="margin-top: -2rem;">
+                            <br>
+                            <a href="/signup" class="forgot-link">Create New Account?</a>
+
+                        </div>
+                    </div><!-- End .tab-content -->
+                </div><!-- End .form-tab -->
+            </div><!-- End .form-box -->
+        </div><!-- End .container -->
+    </div><!-- End .login-page section-bg -->
+</main><!-- End .main -->
+
+<script>
+    $(document).ready(function () {
+    $('#loginPost').submit((e) => {
+      e.preventDefault();
+      $.ajax({
+        url: "/login",
+        type: 'post',
+        data: $('#loginPost').serialize()
+      }).done((res) => {
+        console.log(`succcess ${res.message}`);
+        location.reload() 
+
+      }).fail((err) => {
+        // console.log(err);
+        document.getElementById("loginError").innerHTML=`${err.responseJSON.message}`
+        document.getElementById("loginError").classList.remove('d-none')
+
+        setTimeout(()=>{
+          document.getElementById("loginError").classList.add('d-none')
+          location.reload()
+        },2000)
+
+      })
+    })
+  })
+</script>

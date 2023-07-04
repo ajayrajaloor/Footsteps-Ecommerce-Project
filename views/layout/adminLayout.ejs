@@ -1,0 +1,14 @@
+
+<% if (locals.admin) { %>
+
+     <%- body %>
+
+ <% }else{ %>
+
+        <%- include('../partials/admin/admin-header') %>
+
+                <%- body  %>
+
+        <%- include('../partials/admin/admin-footer') %>
+
+<% } %>

@@ -1,0 +1,290 @@
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<main class="main">
+    <div class="container">
+        <div class="intro-slider-container slider-container-ratio mb-2">
+            <div class="intro-slider owl-carousel owl-simple owl-light owl-nav-inside" data-toggle="owl"
+                data-owl-options='{"nav": false}'>
+                <div class="intro-slide">
+                    <figure class="slide-image">
+                        <picture>
+                            <source media="(max-width: 480px)"
+                                srcset="assets/images/demos/demo-10/slider/slide-1-480w.jpg">
+                            <img src="/user/assets/images/demos/demo-10/slider/slide-1.jpg" alt="Image Desc">
+                        </picture>
+                    </figure><!-- End .slide-image -->
+
+                    <div class="intro-content">
+                        <h3 class="intro-subtitle">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">Sneakers & Athletic Shoes</h1><!-- End .intro-title -->
+
+                        <div class="intro-price text-white">from ₹2999</div><!-- End .intro-price -->
+
+                        <a href="/productPage" class="btn btn-white-primary btn-round">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide -->
+
+                <div class="intro-slide">
+                    <figure class="slide-image">
+                        <picture>
+                            <source media="(max-width: 480px)"
+                                srcset="assets/images/demos/demo-10/slider/slide-2-480w.jpg">
+                            <img src="/user/assets/images/demos/demo-10/slider/slide-2.jpg" alt="Image Desc">
+                        </picture>
+                    </figure><!-- End .slide-image -->
+
+                    <div class="intro-content">
+                        <h3 class="intro-subtitle">Trending Now</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">This Week's Most Wanted</h1><!-- End .intro-title -->
+
+                        <div class="intro-price text-white">from ₹4999</div><!-- End .intro-price -->
+
+                        <a href="/productPage" class="btn btn-white-primary btn-round">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide -->
+
+                <div class="intro-slide">
+                    <figure class="slide-image">
+                        <picture>
+                            <source media="(max-width: 480px)"
+                                srcset="/user/assets/images/demos/demo-10/slider/slide-3-480w.jpg">
+                            <img src="/user/assets/images/demos/demo-10/slider/slide-3.jpg" alt="Image Desc">
+                        </picture>
+                    </figure><!-- End .slide-image -->
+
+                    <div class="intro-content">
+                        <h3 class="intro-subtitle text-white">Deals and Promotions</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">Can’t-miss Clearance:</h1><!-- End .intro-title -->
+
+                        <div class="intro-price text-white">starting at 60% off</div><!-- End .intro-price -->
+
+                        <a href="/productPage" class="btn btn-white-primary btn-round">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                </div><!-- End .intro-slide -->
+            </div><!-- End .intro-slider owl-carousel owl-simple -->
+            <span class="slider-loader"></span><!-- End .slider-loader -->
+        </div><!-- End .intro-slider-container -->
+    </div><!-- End .container -->
+
+
+
+
+
+
+
+    <div class="container">
+        <div class="heading heading-center mb-3">
+            <h2 class="title-lg mb-2">Latest Products</h2><!-- End .title-lg text-center -->
+
+            <ul class="nav nav-pills justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="top-all-link" data-toggle="tab" href="#top-all-tab" role="tab"
+                        aria-controls="top-all-tab" aria-selected="true"></a>
+                </li>
+
+            </ul>
+        </div><!-- End .heading -->
+
+        <div class="tab-content tab-content-carousel">
+            <div class="tab-pane p-0 fade show active" id="trending-women-tab" role="tabpanel"
+                aria-labelledby="trending-women-link">
+                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                    data-owl-options='{
+                                "nav": false, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": {
+                                        "items":2
+                                    },
+                                    "480": {
+                                        "items":2
+                                    },
+                                    "768": {
+                                        "items":3
+                                    },
+                                    "992": {
+                                        "items":4
+                                    },
+                                    "1200": {
+                                        "items":4,
+                                        "dots": false
+                                    }
+                                }
+                            }'>
+                    <% for( let i=0; i < latestProducts.length; i++ ) { %>
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                <a href="/productDisplay/<%= latestProducts[i]._id %>">
+                                    <img src="/uploads/product-images/<%= latestProducts[i].image[0] %>"
+                                        style="width: 30rem; height: 20rem;" alt="Product image" class="product-image">
+
+                                </a>
+
+
+
+                                <% if (!latestProducts[i].isInWishlist) { %>
+                                    <% if (loginStatus) { %>
+                                        <div class="product-action-vertical">
+                                            <a href="#"
+                                                class="btn-product-icon btn-wishlist btn-expandable add-productToWishlist"
+                                                data-value="<%= latestProducts[i]._id %>"><span>add to
+                                                    wishlist</span></a>
+                                            <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
+                                        </div><!-- End .product-action-vertical -->
+                                        <% }else{ %>
+                                            <div class="product-action-vertical">
+                                                <a href="/login"
+                                                    class="btn-product-icon btn-wishlist btn-expandable "><span>add to
+                                                        wishlist</span></a>
+                                            </div><!-- End .product-action-vertical -->
+                                            <% } %>
+                                                <% } else {%>
+                                                    <div class="product-action-vertical">
+                                                        <a href="/view-wishlist"
+                                                            class="btn-product-icon btn-wishlist btn-expandable bg-danger"><span
+                                                                style="background-color: red;">remove
+                                                                from wishlist</span></a>
+                                                        <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
+                                                    </div><!-- End .product-action-vertical -->
+                                                    <% } %>
+
+
+
+
+                                                        <% if (!latestProducts[i].isInCart) { %>
+                                                            <% if (loginStatus) { %>
+                                                                <div class="product-action">
+                                                                    <a href="#"
+                                                                        data-value="<%= latestProducts[i]._id %>"
+                                                                        class="btn-product btn-cart add-product"><span>add
+                                                                            to cart</span></a>
+                                                                </div><!-- End .product-action -->
+                                                                <% } else{%>
+
+                                                                    <div class="product-action">
+                                                                        <a href="/login"
+                                                                            class="btn-product btn-cart"><span>add to
+                                                                                cart</span></a>
+                                                                    </div><!-- End .product-action -->
+                                                                    <% } %>
+                                                                        <% } else {%>
+                                                                            <div class="product-action">
+                                                                                <a href="/cart"
+                                                                                    class="btn-product btn-cart"><span>view
+                                                                                        in
+                                                                                        cart</span></a>
+                                                                            </div><!-- End .product-action -->
+                                                                            <% } %>
+
+
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <p>
+                                        <%= latestProducts[i].product_description %>
+                                    </p>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="product.html">
+                                        <%= latestProducts[i].product_name %>
+                                    </a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    <%= latestProducts[i].product_price %>
+                                </div><!-- End .product-price -->
+
+
+
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                        <% } %>
+
+                </div><!-- End .owl-carousel -->
+            </div><!-- .End .tab-pane -->
+
+        </div><!-- End .tab-content -->
+
+        <!-- <div class="more-container text-center mt-5">
+                    <a href="category.html" class="btn btn-outline-lightgray btn-more btn-round"><span>View more products</span><i class="icon-long-arrow-right"></i></a>
+                </div>End .more-container -->
+    </div><!-- End .container -->
+
+    <div class="mb-5"></div><!-- End .mb5 -->
+
+</main><!-- End .main -->
+
+
+<script>
+    $(document).ready(function () {
+        $('.add-product').click(function (e) {
+            e.preventDefault()
+            const prodId = $(this).data('value')
+            console.log('clicked', prodId)
+            $.ajax({
+                url: '/add-to-cart/' + prodId,
+                type: 'get'
+            })
+                .done((res) => {
+                    console.log(res);
+                    
+                    swal("successfull", `${res.message}`, "success")
+                        .then(() => {
+                            location.reload()
+                        })
+                })
+                .fail((err) => {
+                    console.log(err);
+                })
+        })
+    })
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.add-productToWishlist').click(function (e) {
+            e.preventDefault();
+            const productId = $(this).data('value');
+            console.log("clicked");
+            console.log("hjjjjjjjjjj", productId);
+            $.ajax({
+                url: '/wishlist',
+                type: 'post',
+                data: { productId: productId }
+            })
+                .done((res) => {
+                    console.log(res.message);
+                    swal("successfull", `${res.message}`, "success")
+                        .then(() => {
+                            location.reload()
+                        })
+                })
+                .fail((err) => {
+                    console.log(err);
+                })
+        })
+    })
+
+
+</script>
