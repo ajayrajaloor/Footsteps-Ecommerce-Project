@@ -48,8 +48,8 @@ app.use(session
 
 
 //inintializing flash middleware
-app.use(flash());
-app.use((req,res,next)=>{
+app.use(flash())
+app.use((req,res,next) =>{
   res.locals.message = req.session.message;
   delete req.session.message
   next()
