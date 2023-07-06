@@ -357,8 +357,9 @@ const allOrders = async (req, res) => {
 const changeProductOrderStatus = async (req, res, next) => {
   try {
     const response = await orderHelper.changeOrderStatus(req.body.orderId, req.body.status);
+    console.log(response,'rrrrrreeeeessssssssssssssssss');
 
-    if (response.orderStatus == 'returned') {
+    if (response.orderStatus == 'returned' ) {
       await walletHelper.addMoneyToWallet(response.user, response.totalAmount);
       await productHelper.increaseStock(response)
     }

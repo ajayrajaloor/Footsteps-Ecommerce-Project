@@ -16,7 +16,7 @@ module.exports = {
                             response.loggedIn = true;
                             resolve(response)
                         } else {
-                            response.logginMessage = "Invalid username or passworddd";
+                            response.logginMessage = "Invalid username or password";
                            resolve(response)
                         }
                     })

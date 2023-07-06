@@ -168,6 +168,7 @@ module.exports = {
 
     getAllDeliveredOrders: () => {
         return new Promise(async (resolve, reject) => {
+            const currentMonthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
             await orderSchema.aggregate([
                 {
                     $match: { orderStatus: 'delivered' }
@@ -178,6 +179,12 @@ module.exports = {
                         localField: 'user',
                         foreignField: '_id',
                         as: 'userDetails'
+                    }
+                },
+                {
+                    $match: {
+                        createdAt: { $gte: currentMonthStart },
+                        
                     }
                 }
             ])
@@ -276,7 +283,13 @@ module.exports = {
               { $set: { orderStatus: "cancelled", cancellationReason: reason } },
               { new: true }
             );
-            resolve(cancelledOrderResponse.orderStatus);
+      
+            console.log(cancelledOrderResponse, 'rrrreeeeeeesssssss');
+      
+            resolve({
+                cancelledOrderResponse
+              
+            });
           } catch (error) {
             reject(error);
           }

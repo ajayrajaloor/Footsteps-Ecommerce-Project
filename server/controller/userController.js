@@ -188,19 +188,38 @@ const userProfile = async (req, res) => {
 
 
 const userSignup = async (req, res, next) => {
-  res.render('users/signup')
-}
+  try {
+    const message = req.flash('message');
+
+    res.render('users/signup', {
+      message: message // Access the first message in the array
+    });
+  } catch (error) {
+    console.log(error);
+    // Handle any errors that occurred during rendering or processing
+    next(error);
+  }
+};
+
 
 
 const userSignupPost = async (req, res) => {
-  userHelper.doSignup(req.body).then((response) => {
+  try {
+    const response = await userHelper.doSignup(req.body);
     if (!response.userExist) {
-      res.redirect('/login')
+      res.redirect('/login');
     } else {
-      res.redirect('/')
+      req.flash('message', 'You are an existing user. Please log in.');
+      console.log('user exist');
+      res.redirect('/signup');
     }
-  })
-}
+  } catch (error) {
+    console.log(error);
+    // Handle any errors that occurred during the signup process
+    res.redirect('/signup');
+  }
+};
+
 
 
 const otpUser = (req, res) => {
@@ -758,13 +777,26 @@ const cancelOrder = async (req, res, next) => {
   const { userId, orderId, reason } = req.body;
   try {
     const cancelled = await orderHelper.cancelOrder(userId, orderId, reason);
-    res
-      .status(200)
-      .json({ isCancelled: true, message: "Order cancelled successfully" });
+
+    console.log(cancelled.cancelledOrderResponse, 'ccccccccaaaaaaaaaaaa');
+    if (cancelled.cancelledOrderResponse.orderStatus === 'cancelled') {
+      if(cancelled.cancelledOrderResponse.paymentMethod !== 'COD'){
+
+        await walletHelper.addMoneyToWallet(cancelled.cancelledOrderResponse.user, cancelled.cancelledOrderResponse.totalAmount);
+        await productHelper.increaseStock(cancelled.cancelledOrderResponse);
+        
+      }
+     
+    }
+
+    res.status(200).json({ isCancelled: true, message: "Order cancelled successfully" });
   } catch (error) {
     return next(error);
   }
 };
+
+
+
 
 
 const returnOrder = async (req, res, next) => {

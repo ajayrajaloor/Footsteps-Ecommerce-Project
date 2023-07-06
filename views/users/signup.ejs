@@ -1,54 +1,71 @@
-
-
 <main class="main">
-    
 
-    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-image: url('/user/assets/images/backgrounds/login-bg.jpg')">
+
+    <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+        style="background-image: url('/user/assets/images/backgrounds/login-bg.jpg')">
         <div class="container">
-            <div class="form-box" style="border-radius: 20px; height: 55rem">
+            <div class="form-box" style="border-radius: 20px; height: 57rem">
                 <div class="form-tab">
                     <ul class="nav nav-pills nav-fill" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link  active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
+                            <a class="nav-link  active" id="register-tab-2" data-toggle="tab" href="#register-2"
+                                role="tab" aria-controls="register-2" aria-selected="true">Register</a>
                         </li>
-                       
+
                     </ul>
                     <div class="tab-content">
-                        
-                        <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+
+                        <div class="tab-pane fade show active" id="register-2" role="tabpanel"
+                            aria-labelledby="register-tab-2">
+
+                            <% if (message.length>0) { %>
+                                <div class="alert alert-danger" id="flashMessage">
+                                    <i class="fa-solid fa-triangle-exclamation" style="color: #ff0000;"></i>
+                                    <%=message %>
+                                </div>
+                                <% } %>
                             <form action="/signup" method="post" id="signup-form">
 
                                 <div class="form-group">
                                     <!-- <label for="register-name">Name *</label> -->
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Name *">
                                 </div><!-- End .form-group -->
-                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="nameError"></span>
+                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                                    id="nameError"></span>
 
                                 <div class="form-group">
                                     <!-- <label for="register-email-2">Your email address *</label> -->
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Your email address *">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Your email address *">
                                 </div><!-- End .form-group -->
-                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="emailError"></span>
+                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                                    id="emailError"></span>
 
                                 <div class="form-group">
                                     <!-- <label for="register-number">Phone Number *</label> -->
-                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number *">
+                                    <input type="text" class="form-control" id="phone" name="phone"
+                                        placeholder="Phone Number *">
                                 </div><!-- End .form-group -->
-                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="mobileNumError"></span>
+                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                                    id="mobileNumError"></span>
 
 
                                 <div class="form-group">
                                     <!-- <label for="register-password-2">Password *</label> -->
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password *">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Password *">
                                 </div><!-- End .form-group -->
-                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="passwordError"></span>
+                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                                    id="passwordError"></span>
 
 
                                 <div class="form-group">
                                     <!-- <label for="register-password-2">Password *</label> -->
-                                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password *">
+                                    <input type="password" class="form-control" id="password2" name="password2"
+                                        placeholder="Confirm Password *">
                                 </div><!-- End .form-group -->
-                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;" id="password2Error"></span>
+                                <span class="text-danger d-none" style="font-size: 12px; margin-left: 10px;"
+                                    id="password2Error"></span>
 
 
                                 <div class="form-footer">
@@ -60,8 +77,7 @@
 
                                 </div><!-- End .form-footer -->
                             </form>
-                            <%# 
-                            <div class="form-choice">
+                            <%# <div class="form-choice">
                                 <p class="text-center">or sign in with</p>
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -77,20 +93,20 @@
                                         </a>
                                     </div><!-- End .col-6 -->
                                 </div><!-- End .row -->
-                            </div><!-- End .form-choice -->
-                             %>
-                        </div><!-- .End .tab-pane -->
+                        </div><!-- End .form-choice -->
+                        %>
+                    </div><!-- .End .tab-pane -->
 
-                        <div class="text-center" style="margin-top: -2rem">
-                            <br>
-                            <a href="/login" class="forgot-link"  >Already have an Account?</a>
+                    <div class="text-center" style="margin-top: -2rem">
+                        <br>
+                        <a href="/login" class="forgot-link">Already have an Account?</a>
 
-                        </div>
+                    </div>
 
-                    </div><!-- End .tab-content -->
-                </div><!-- End .form-tab -->
-            </div><!-- End .form-box -->
-        </div><!-- End .container -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .form-tab -->
+        </div><!-- End .form-box -->
+    </div><!-- End .container -->
     </div><!-- End .login-page section-bg -->
 </main><!-- End .main -->
 
@@ -106,15 +122,23 @@
 
 
     const usernameRegex = /^[a-zA-Z0-9_]+$/;
-    const emailRegX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    const emailRegX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const mobileRegex = /^\d{10}$/;
-    const passRegX = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{4,}$/;
+    const passRegX = /^.{6,}$/; // only lookup minimum 6 characters
+
+
+    // const passRegX = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{6,}$/;
+//includes positive lookahead assertions to enforce at least one alphabetical character ((?=.*[a-zA-Z]) and at least one digit ((?=.*\d)). It also allows alphanumeric characters, along with the specified special characters, and requires a minimum length of 6 characters.
+
+    // const passRegX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{6,}$/;
+    //to enforce a minimum length of 6 characters with at least one uppercase letter, one lowercase letter, one digit, and one special character
+
 
     loginForm.addEventListener('submit', (e) => {
         if (userName.value === "" || userName.value === null) {
             e.preventDefault();
             document.getElementById("nameError").classList.remove('d-none');
-            document.getElementById("nameError").innerHTML = "Name must be filled!----"
+            document.getElementById("nameError").innerHTML = "Name must be filled!"
         } else if (!userName.value.match(usernameRegex)) {
             e.preventDefault();
             document.getElementById("nameError").classList.remove('d-none');
@@ -155,27 +179,33 @@
         if (password.value === "" || password.value === null) {
             e.preventDefault();
             document.getElementById("passwordError").classList.remove('d-none');
-            document.getElementById("passwordError").innerHTML = "password must be filled!"
+            document.getElementById("passwordError").innerHTML = "Password must be filled!";
         } else if (!password.value.match(passRegX)) {
             e.preventDefault();
             document.getElementById("passwordError").classList.remove('d-none');
-            document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters including one uppercase letter,<br> one lowercase letter, one number and one special character.";
-        } else if (password.value.match(passRegX)) {
-            document.getElementById("passwordError").classList.remove('d-none');
-            document.getElementById("passwordError").innerHTML = ""
+            document.getElementById("passwordError").innerHTML = "Password must contain at least 6 characters.";
+        } else {
+            document.getElementById("passwordError").classList.add('d-none');
         }
 
 
+
         if (password2.value === "" || password2.value === null) {
-        e.preventDefault();
-        document.getElementById("password2Error").classList.remove('d-none');
-        document.getElementById("password2Error").textContent = "Confirm password is required.";
-      } else if (password.value !== password2.value) {
-        e.preventDefault();
-        document.getElementById("password2Error").classList.remove('d-none');
-        document.getElementById("password2Error").textContent = "Passwords do not match.";
-      } else {
-        document.getElementById("password2Error").classList.add('d-none');
-      }
+            e.preventDefault();
+            document.getElementById("password2Error").classList.remove('d-none');
+            document.getElementById("password2Error").textContent = "Confirm password is required.";
+        } else if (password.value !== password2.value) {
+            e.preventDefault();
+            document.getElementById("password2Error").classList.remove('d-none');
+            document.getElementById("password2Error").textContent = "Passwords do not match.";
+        } else {
+            document.getElementById("password2Error").classList.add('d-none');
+        }
     })
+</script>
+<script>
+     setTimeout(() => {
+                document.getElementById('flashMessage').style.display = 'none';
+            }, 2000);
+
 </script>

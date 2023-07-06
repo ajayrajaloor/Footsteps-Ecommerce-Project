@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const session = require('express-session')
 const expressLayout = require('express-ejs-layouts')
 const nocache = require('nocache')
-
+const flash  = require('connect-flash')
 
 
 
@@ -45,6 +45,15 @@ app.use(session
  saveUninitialized: false,
  cookie:{maxAge:6000000}
 }));
+
+
+//inintializing flash middleware
+app.use(flash());
+app.use((req,res,next)=>{
+  res.locals.message = req.session.message;
+  delete req.session.message
+  next()
+})
 
 
 app.use('/', usersRouter);
