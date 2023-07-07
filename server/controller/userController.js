@@ -37,7 +37,7 @@ const landingPage = async (req, res, next) => {
       latestProducts, loginStatus
     })
   } catch (error) {
-    return next(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -65,7 +65,10 @@ const userHome = async (req, res) => {
       latestProducts, loginStatus, cartCount, wishListCount
     })
   } catch (error) {
+    console.log(123);
     console.log(error);
+    // res.render('error',{error})
+    res.status(500).render('error', { error });
   }
 }
 
@@ -102,7 +105,7 @@ const forgotPassword = (req, res) => {
   try {
     res.render('users/forgotPassword')
   } catch (error) {
-    console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -124,7 +127,7 @@ const postForgotPass = async (req, res) => {
         console.log(error + "error");
       })
   } catch (error) {
-    console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -142,7 +145,7 @@ const postForgotPasswordOtp = async (req, res) => {
         res.redirect('/signup')
       }
     }).catch((error) => {
-      console.log(error);
+      res.status(500).render('error', { error });
     })
 }
 
@@ -155,7 +158,7 @@ const resetPassword = async (req, res) => {
     let userConfirmed = await userHelper.resetPassword(newPassword, phone)
     res.redirect('/login')
   } catch (error) {
-    console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -168,7 +171,7 @@ const userLogout = async (req, res) => {
     loginStatus = false
     res.redirect('/')
   } catch {
-    console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -181,7 +184,7 @@ const userProfile = async (req, res) => {
     let allAddress = await addressHelper.findAllAddress(userId)
     res.render('users/profile', { loginStatus, allAddress, cartCount, wishListCount })
   } catch (error) {
-    console.log(error);
+    res.status(500).render('error', { error });
   }
 
 }
@@ -197,7 +200,7 @@ const userSignup = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     // Handle any errors that occurred during rendering or processing
-    next(error);
+    res.status(500).render('error', { error });
   }
 };
 
@@ -266,6 +269,7 @@ const otpVerifying = async (req, res) => {
       }
     }).catch((error) => {
       console.log(error + "error occurred");
+      res.status(500).render('error', { error });
     });
 };
 
@@ -286,7 +290,7 @@ const searchProduct = async (req, res, next) => {
     searchResult = searchResult.slice(0, 5);
     res.send({ searchResult })
   } catch (error) {
-    next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -351,7 +355,7 @@ const displayProducts = async (req, res, next) => {
       res.json({ product: product, loginStatus, cartCount, wishListCount})
     }
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -400,6 +404,7 @@ const userProductDisplay = async (req, res) => {
     res.render('users/productDisplay', { product, loginStatus,  cartCount, wishListCount})
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 
 }
@@ -418,6 +423,7 @@ const userCart = async (req, res) => {
     res.render('users/cart', { loginStatus, allCartItems, cartCount, wishListCount, totalAmount: totalandSubTotal })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 
 }
@@ -444,6 +450,7 @@ const addToCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -464,6 +471,7 @@ const incDecQuantity = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -480,6 +488,7 @@ const removeFromCart = (req, res) => {
       })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -492,7 +501,8 @@ const addToWishlist = async (req, res, next) => {
     let result = await wishlistHelper.addItemToWishlist(productId, user)
     res.json({ message: `item added to wishlist ` })
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
+
   }
 }
 
@@ -514,7 +524,7 @@ const viewWishlist = async (req, res, next) => {
 
     res.render('users/wishlist', { loginStatus, wishlist: wishlist, cartCount, wishListCount })
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -529,7 +539,7 @@ const removeFromWishlist = async (req, res, next) => {
 
     res.status(200).json({ message: 'item removed from the wishlist', wishlistCount })
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -557,6 +567,7 @@ const checkout = async (req, res) => {
     res.render('users/checkout', { loginStatus, user, cartItems, walletBalance,coupons, totalAmount: totalAmount, address: userAddress, cartCount, wishListCount })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 
 }
@@ -582,7 +593,7 @@ const getWallet = async (req, res, next) => {
     res.json({ walletDetails })
 
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -595,7 +606,7 @@ const applyCoupon = async (req, res, next) => {
     const result = await couponHelper.applyCoupon(user, couponCode)
     res.status(200).json(result)
   } catch (error) {
-    return next(error)
+    res.status(500).render('error', { error });
   }
 }
 
@@ -608,6 +619,7 @@ const addAddress = async (req, res) => {
       })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -618,6 +630,7 @@ const editAddress = async (req, res) => {
     res.json({ address: address })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -627,6 +640,7 @@ const postEditAddress = async (req, res) => {
     res.json({ message: "address updated" })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -695,6 +709,7 @@ const placeOrder = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -717,7 +732,7 @@ const verifyPayment = async (req, res, next) => {
       }
     })
     .catch((error) => {
-      return next(error)
+      res.status(500).render('error', { error });
     })
 }
 
@@ -727,6 +742,7 @@ const orderSuccess = (req, res) => {
     res.render('users/successOrderPage', { loginStatus })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -746,6 +762,7 @@ const orders = async (req, res) => {
     res.render('users/orders', { loginStatus, orderDetailsUser, cartCount, wishListCount })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -773,6 +790,7 @@ const viewOrderDetails = async (req, res) => {
     res.render('users/userOrderDetails', { loginStatus, orderDetails, productDetails, cartCount, wishListCount })
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error });
   }
 }
 
@@ -794,7 +812,7 @@ const cancelOrder = async (req, res, next) => {
 
     res.status(200).json({ isCancelled: true, message: "Order cancelled successfully" });
   } catch (error) {
-    return next(error);
+    res.status(500).render('error', { error });
   }
 };
 
@@ -810,7 +828,7 @@ const returnOrder = async (req, res, next) => {
       .status(200)
       .json({ isReturned: "return pending", message: "order returning process started" });
   } catch (error) {
-    return next(error);
+    res.status(500).render('error', { error });
   }
 };
 
