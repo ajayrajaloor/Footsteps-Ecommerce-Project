@@ -235,8 +235,11 @@
                                             <% } %>
 
                                             <% if (orderDetails.orderStatus == 'delivered') { %>
+                                                <% const expiryOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }; %>
+                                              
                                                 <% if (new Date(orderDetails.expiryDate) > new Date()) { %>
-                                                    <h5>Expiry Date : <%= new Date(orderDetails.expiryDate).toLocaleDateString() %></h5>
+                                                  
+                                                    <h5>Expiry Date : <%= new Date(orderDetails.expiryDate).toLocaleDateString('en-GB', expiryOptions) %></h5>
                                                     <button class="float-left ml-5" style="background-color: rgb(69, 70, 70); margin-right: 3rem;" onclick="returnOrder('<%= orderDetails.user %>','<%= orderDetails._id %>')"><span style="color: white;">Return order</span></button>
                                                 <% } else { %>
                                                     <h4>Expiry Date : Expired</h4>

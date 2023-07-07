@@ -761,11 +761,14 @@ const viewOrderDetails = async (req, res) => {
     let orderDetails = await orderHelper.getUserOrderDetailsAndAddress(orderId)
     let productDetails = await orderHelper.getOrderedProductDetails(orderId)
 
-    const expiryOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const expiryDate = orderDetails.orderDate // Get the current date
-    expiryDate.setDate(expiryDate.getDate() + 7); // Set the expiry date to 1 week from now
-    const expiryDateString = expiryDate.toLocaleDateString('en-GB', expiryOptions);
-    orderDetails.expiryDate = expiryDateString;
+    // const expiryOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }; to change the date format to - eg: 14/07/2023
+    const orderDate = new Date(orderDetails.orderDate); // Create a new Date object based on orderDate
+
+    const expiryDate = new Date(orderDate); // Create a new Date object for expiry date
+
+    expiryDate.setDate(expiryDate.getDate() + 7); // Set the expiry date to 1 week from orderDate
+
+    orderDetails.expiryDate = expiryDate
 
     res.render('users/userOrderDetails', { loginStatus, orderDetails, productDetails, cartCount, wishListCount })
   } catch (error) {
