@@ -17,7 +17,7 @@ let easyinvoice = require('easyinvoice');
 const razorpay = require('../../api/razorPay');
 const couponHelper = require('../helpers/couponHelper');
 
-let loginStatus;
+// let loginStatus;
 let cartCount;
 let wishListCount;
 
@@ -27,14 +27,15 @@ const landingPage = async (req, res, next) => {
 
   try {
     let latestProducts = await productHelper.recentProducts()
-    console.log(latestProducts);
+    
 
     for (let i = 0; i < latestProducts.length; i++) {
       latestProducts[i].product_price = currencyFormat(latestProducts[i].product_price)
     }
 
     res.render('users/home', {
-      latestProducts, loginStatus
+      latestProducts,
+       loginStatus : req.session.user
     })
   } catch (error) {
     res.status(500).render('error', { error , layout: false });
@@ -49,7 +50,7 @@ const userHome = async (req, res) => {
     wishListCount = await wishlistHelper.getWishListCount(userId)
 
     let latestProducts = await productHelper.recentProducts()
-    console.log(latestProducts);
+   
     const response = await productHelper.getAllProducts()
 
     for (let i = 0; i < latestProducts.length; i++) {
@@ -62,11 +63,10 @@ const userHome = async (req, res) => {
       latestProducts[i].product_price = currencyFormat(latestProducts[i].product_price)
     }
     res.status(200).render('users/home', {
-      latestProducts, loginStatus, cartCount, wishListCount
+      latestProducts, loginStatus : req.session.user, cartCount, wishListCount
     })
   } catch (error) {
-    console.log(123);
-    console.log(error);
+   
     // res.render('error',{error})
     res.status(500).render('error', { error , layout: false });
   }
@@ -81,14 +81,11 @@ const userLogin = async (req, res, next) => {
 
 const userLoginPost = async (req, res) => {
   await userHelper.doLogin(req.body).then((response) => {
-    // console.log(response );
-    // console.log("--------------");
-
-
+    
     if (response.loggedIn) {
       // req.session.loggedIn = true
       req.session.user = response.user
-      loginStatus = req.session.user
+      // loginStatus = req.session.user
       return res.status(202).json({ error: false, message: response.logginMessage })
 
     } else {
@@ -124,7 +121,7 @@ const postForgotPass = async (req, res) => {
           res.redirect('/signup')
         }
       }).catch((error) => {
-        console.log(error + "error");
+        res.status(500).render('error', { error  , layout: false});
       })
   } catch (error) {
     res.status(500).render('error', { error  , layout: false});
@@ -167,8 +164,8 @@ const resetPassword = async (req, res) => {
 
 const userLogout = async (req, res) => {
   try {
-    req.session.user = false
-    loginStatus = false
+    req.session.user = null
+    // loginStatus = false
     res.redirect('/')
   } catch {
     res.status(500).render('error', { error  , layout: false});
@@ -182,7 +179,7 @@ const userProfile = async (req, res) => {
     wishListCount = await wishlistHelper.getWishListCount(userId)
 
     let allAddress = await addressHelper.findAllAddress(userId)
-    res.render('users/profile', { loginStatus, allAddress, cartCount, wishListCount })
+    res.render('users/profile', { loginStatus : req.session.user, allAddress, cartCount, wishListCount })
   } catch (error) {
     res.status(500).render('error', { error  , layout: false});
   }
@@ -198,7 +195,7 @@ const userSignup = async (req, res, next) => {
       message: message // Access the first message in the array
     });
   } catch (error) {
-    console.log(error);
+    
     // Handle any errors that occurred during rendering or processing
     res.status(500).render('error', { error , layout: false });
   }
@@ -213,11 +210,11 @@ const userSignupPost = async (req, res) => {
       res.redirect('/login');
     } else {
       req.flash('message', 'You are an existing user. Please log in.');
-      console.log('user exist');
+     
       res.redirect('/signup');
     }
   } catch (error) {
-    console.log(error);
+    
     // Handle any errors that occurred during the signup process
     res.redirect('/signup');
   }
@@ -226,7 +223,7 @@ const userSignupPost = async (req, res) => {
 
 
 const otpUser = (req, res) => {
-  res.render('users/otp-form', { loginStatus })
+  res.render('users/otp-form', { loginStatus : req.session.user })
 }
 
 const otpSending = async (req, res) => {
@@ -241,12 +238,12 @@ const otpSending = async (req, res) => {
         req.session.resendTimer = Date.now() + 30000; // Set the timer for 30 seconds
         res.render('users/otp-verification', { resendOTP: req.session.resendOTP, resendTimer: req.session.resendTimer });
       } else {
-        console.log("mobile number not found");
+       
         res.redirect('/signup');
       }
     })
     .catch((error) => {
-      console.log(error + "error");
+     
       res.redirect('/signup');
     });
 };
@@ -256,19 +253,19 @@ const otpSending = async (req, res) => {
 const otpVerifying = async (req, res) => {
   const phone = req.session.mobile;
   const otp = req.body.num1 + req.body.num2 + req.body.num3 + req.body.num4 + req.body.num5 + req.body.num6;
-  console.log(otp);
+  
   await twilio.verifyOtp(phone, otp)
     .then((status) => {
-      console.log(status);
+      
       if (status) {
         req.session.user = req.session.tempUser;
-        loginStatus = req.session.user;
+        // loginStatus = req.session.user;
         res.redirect('/');
       } else {
         res.redirect('/signup');
       }
     }).catch((error) => {
-      console.log(error + "error occurred");
+     
       res.status(500).render('error', { error  , layout: false});
     });
 };
@@ -302,14 +299,14 @@ const displayProducts = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const perPage = 3;
     const docCount = await productSchema.countDocuments({ product_status: true });
-    console.log(docCount, 'Total document count');
+  
 
     const products = await productSchema
       .find({ product_status: true })
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-    console.log(products, 'Products');
+   
 
     if (req.session.user) {
       let userId = req.session.user._id
@@ -332,7 +329,7 @@ const displayProducts = async (req, res, next) => {
         product[i].product_price = Number(product[i].product_price).toLocaleString('en-in', { style: 'currency', currency: 'INR' })
       }
 
-      res.render('users/userProduct', { product: product, loginStatus, cartCount, wishListCount,totalPages: Math.ceil(docCount / perPage),
+      res.render('users/userProduct', { product: product, loginStatus : req.session.user, cartCount, wishListCount,totalPages: Math.ceil(docCount / perPage),
       currentPage: page,
       perPage,products  })
 
@@ -352,7 +349,7 @@ const displayProducts = async (req, res, next) => {
         }
         product[i].product_price = Number(product[i].product_price).toLocaleString('en-in', { style: 'currency', currency: 'INR' })
       }
-      res.json({ product: product, loginStatus, cartCount, wishListCount})
+      res.json({ product: product, loginStatus : req.session.user, cartCount, wishListCount})
     }
   } catch (error) {
     res.status(500).render('error', { error  , layout: false});
@@ -374,9 +371,7 @@ const displayProducts = async (req, res, next) => {
 
 //       response[i].product_price = Number(response[i].product_price).toLocaleString('en-in', { style: 'currency', currency: 'INR' })
 //     }
-//     console.log("11111111111111");
-//     console.log(response);
-//     console.log("11111111111111");
+//     
 //     res.render('users/userProduct', { products: response, loginStatus })
 //   } catch (error) {
 //     console.log(error);
@@ -401,9 +396,9 @@ const userProductDisplay = async (req, res) => {
       product.isInWishlist = isInWishlist
     }
 
-    res.render('users/productDisplay', { product, loginStatus,  cartCount, wishListCount})
+    res.render('users/productDisplay', { product, loginStatus : req.session.user,  cartCount, wishListCount})
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 
@@ -420,9 +415,9 @@ const userCart = async (req, res) => {
 
     totalandSubTotal = currencyFormat(totalandSubTotal)
   
-    res.render('users/cart', { loginStatus, allCartItems, cartCount, wishListCount, totalAmount: totalandSubTotal })
+    res.render('users/cart', { loginStatus : req.session.user, allCartItems, cartCount, wishListCount, totalAmount: totalandSubTotal })
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error , layout: false });
   }
 
@@ -449,7 +444,7 @@ const addToCart = async (req, res) => {
       res.status(202).json({ status: "success", message: "product added to cart" })
     }
   } catch (error) {
-    console.log(error);
+  
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -470,7 +465,7 @@ const incDecQuantity = async (req, res) => {
     res.status(202).json({ message: obj })
 
   } catch (error) {
-    console.log(error);
+  
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -487,7 +482,7 @@ const removeFromCart = (req, res) => {
         res.status(202).json({ message: "sucessfully item removed" })
       })
   } catch (error) {
-    console.log(error);
+    
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -522,7 +517,7 @@ const viewWishlist = async (req, res, next) => {
       wishlist[i].isInCart = isInCart
     }
 
-    res.render('users/wishlist', { loginStatus, wishlist: wishlist, cartCount, wishListCount })
+    res.render('users/wishlist', { loginStatus : req.session.user, wishlist: wishlist, cartCount, wishListCount })
   } catch (error) {
     res.status(500).render('error', { error  , layout: false});
   }
@@ -557,16 +552,16 @@ const checkout = async (req, res) => {
 
     let totalAmount = await cartHelper.totalSubtotal(user._id, cartItems)
     const coupons = await couponHelper.findAllCoupons();
-    console.log(coupons,'ccccccccccccccccccccccccc');
+    
     const userAddress = await addressHelper.findAllAddress(user._id)
     // for (let i = 0; i < cartItems.length; i++) {
     //   cartItems[i].product.product_price = cartItems[i].product.product_price.toLocaleString('en-in', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
     // }
 
 
-    res.render('users/checkout', { loginStatus, user, cartItems, walletBalance,coupons, totalAmount: totalAmount, address: userAddress, cartCount, wishListCount })
+    res.render('users/checkout', { loginStatus : req.session.user, user, cartItems, walletBalance,coupons, totalAmount: totalAmount, address: userAddress, cartCount, wishListCount })
   } catch (error) {
-    console.log(error);
+ 
     res.status(500).render('error', { error  , layout: false});
   }
 
@@ -618,7 +613,7 @@ const addAddress = async (req, res) => {
         res.status(202).json({ message: "address added successfully" })
       })
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -629,7 +624,7 @@ const editAddress = async (req, res) => {
     let address = await addressHelper.findAnAddress(req.params.id)
     res.json({ address: address })
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -639,7 +634,7 @@ const postEditAddress = async (req, res) => {
     let updatedAddress = await addressHelper.EditAnAddress(req.body)
     res.json({ message: "address updated" })
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -708,7 +703,7 @@ const placeOrder = async (req, res) => {
 
 
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -739,9 +734,9 @@ const verifyPayment = async (req, res, next) => {
 
 const orderSuccess = (req, res) => {
   try {
-    res.render('users/successOrderPage', { loginStatus })
+    res.render('users/successOrderPage', { loginStatus : req.session.user })
   } catch (error) {
-    console.log(error);
+  
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -759,9 +754,9 @@ const orders = async (req, res) => {
       orderDetailsUser[i].totalAmount = currencyFormat(orderDetailsUser[i].totalAmount)
     }
 
-    res.render('users/orders', { loginStatus, orderDetailsUser, cartCount, wishListCount })
+    res.render('users/orders', { loginStatus : req.session.user, orderDetailsUser, cartCount, wishListCount })
   } catch (error) {
-    console.log(error);
+  
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -787,9 +782,9 @@ const viewOrderDetails = async (req, res) => {
 
     orderDetails.expiryDate = expiryDate
 
-    res.render('users/userOrderDetails', { loginStatus, orderDetails, productDetails, cartCount, wishListCount })
+    res.render('users/userOrderDetails', { loginStatus : req.session.user, orderDetails, productDetails, cartCount, wishListCount })
   } catch (error) {
-    console.log(error);
+   
     res.status(500).render('error', { error  , layout: false});
   }
 }
@@ -799,7 +794,7 @@ const cancelOrder = async (req, res, next) => {
   try {
     const cancelled = await orderHelper.cancelOrder(userId, orderId, reason);
 
-    console.log(cancelled.cancelledOrderResponse, 'ccccccccaaaaaaaaaaaa');
+    
     if (cancelled.cancelledOrderResponse.orderStatus === 'cancelled') {
       if(cancelled.cancelledOrderResponse.paymentMethod !== 'COD'){
 
