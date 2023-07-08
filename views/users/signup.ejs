@@ -1,8 +1,18 @@
 <main class="main">
-
+    <style>
+        .tab-pane.fade.show.active {
+            background-color: rgba(255, 255, 255, 0.7); 
+            border-radius: 10px;
+        }
+    </style>
+    <style>
+        .form-box {
+            background-color: rgba(255, 255, 255, 0.5); /* Adjust the last value (0.7) to control transparency */
+        }
+    </style>
 
     <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-        style="background-image: url('/user/assets/images/backgrounds/login-bg.jpg')">
+        style="background-image: url('/user/assets/images/backgrounds/login-bg-image1.jpg')">
         <div class="container">
             <div class="form-box" style="border-radius: 20px; height: 57rem">
                 <div class="form-tab">
@@ -99,7 +109,7 @@
 
                     <div class="text-center" style="margin-top: -2rem">
                         <br>
-                        <a href="/login" class="forgot-link">Already have an Account?</a>
+                        <a href="/login" class="forgot-link"><span style="font-weight: bold; background-color: aliceblue;">Already have an Account?</span></a>
 
                     </div>
 
