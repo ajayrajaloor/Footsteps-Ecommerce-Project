@@ -83,6 +83,43 @@
     }
 </style>
 
+<style>
+    .order-summary {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-summary-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.order-summary-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.order-summary-value {
+    font-weight: bold;
+}
+
+.return-order-button {
+    background-color: rgb(69, 70, 70);
+    color: white;
+    margin-right: 3rem;
+}
+
+.expiry-date {
+    font-size: medium;
+}
+
+.cannot-return {
+    font-size: small;
+}
+
+</style>
+
 <link rel="stylesheet" href="/admin/assets/css/vendors/material-icon-round.css">
 <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
 
@@ -208,46 +245,39 @@
                                 <tr>
                                     <td colspan="4">
                                         <article class="float-end">
-                                           
-                                                <!-- <dl class="dlist">
-                                              <dt>Subtotal:</dt>
-                                              <dd>$973.35</dd>
-                                            </dl>
-                                            <dl class="dlist">
-                                              <dt>Shipping cost:</dt>
-                                              <dd>$10.00</dd>
-                                            </dl> -->
-                                                <dl class="dlist">
-                                                    <dt>Grand total:</dt>
-                                                    <dd><b class="h5"> ₹<%= orderDetails.totalAmount %></b></dd>
-                                                </dl>
-                                                
-                                                    <dl class="dlist">
-                                                        <dt class="text-muted">Status:</dt>
-                                                        <dd>
-                                                            <span
-                                                                class="badge rounded-pill alert-success text-success"><%= orderDetails.orderStatus %></span>
-                                                        </dd>
-                                                    </dl>
-                                                
+                                            <div class="order-summary">
+                                                <div class="order-summary-row">
+                                                    <div class="order-summary-label" style="font-size: large;">Grand total:</div>
+                                                    <div class="order-summary-value" style="font-size: large;">₹<%= orderDetails.totalAmount %></div>
+                                                </div>
+                                                <div class="order-summary-row">
+                                                    <div class="order-summary-label">Status:</div>
+                                                    <div class="order-summary-value">
+                                                        <span class="badge rounded-pill alert-success text-success"><%= orderDetails.orderStatus %></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                             <% if (orderDetails.orderStatus !== 'delivered' && orderDetails.orderStatus !== 'return pending' && orderDetails.orderStatus !== 'cancelled' && orderDetails.orderStatus !== 'returned') { %>
-                                                <button class="float-left ml-5" style="background-color: rgb(186, 11, 11); margin-right: 3rem;" onclick="cancelOrder('<%= orderDetails.user %>','<%= orderDetails._id %>')"><span style="color: white;">Cancel order</span></button>
+                                                <button class="return-order-button" onclick="cancelOrder('<%= orderDetails.user %>','<%= orderDetails._id %>')">
+                                                    <span>Cancel Order</span>
+                                                </button>
                                             <% } %>
-
-                                            <% if (orderDetails.orderStatus == 'delivered') { %>
+                                            <% if (orderDetails.orderStatus === 'delivered') { %>
                                                 <% const expiryOptions = { day: '2-digit', month: '2-digit', year: 'numeric' }; %>
-                                              
                                                 <% if (new Date(orderDetails.expiryDate) > new Date()) { %>
-                                                  
-                                                    <h5>Expiry Date : <%= new Date(orderDetails.expiryDate).toLocaleDateString('en-GB', expiryOptions) %></h5>
-                                                    <button class="float-left ml-5" style="background-color: rgb(69, 70, 70); margin-right: 3rem;" onclick="returnOrder('<%= orderDetails.user %>','<%= orderDetails._id %>')"><span style="color: white;">Return order</span></button>
+                                                    <button class="return-order-button" onclick="returnOrder('<%= orderDetails.user %>','<%= orderDetails._id %>')">
+                                                        <span>Return Order</span>
+                                                    </button>
+                                                    <div class="expiry-date">Expiry Date: <%= new Date(orderDetails.expiryDate).toLocaleDateString('en-GB', expiryOptions) %></div>
                                                 <% } else { %>
-                                                    <h4>Expiry Date : Expired</h4>
-                                                    <h5>Cannot be returned</h5>
-                                                    <% } %>
-                                              <% } %>
+                                                    <div class="expiry-date">Expiry Date: Expired</div>
+                                                    <div class="cannot-return">Cannot be returned</div>
+                                                <% } %>
+                                            <% } %>
                                         </article>
                                     </td>
+                                    
 
                                 </tr>
                             </tbody>

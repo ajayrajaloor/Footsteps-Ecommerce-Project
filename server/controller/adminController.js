@@ -339,11 +339,14 @@ const allOrders = async (req, res) => {
     const allOrders = await orderHelper.findAllOrders();
 
     for (let i = 0; i < allOrders.length; i++) {
-      const orderDate = new Date(allOrders[i].orderDate);
+      let orderDate = new Date(allOrders[i].orderDate)
+   
       const formattedTime = orderDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-      const formattedDate = orderDate.toLocaleDateString('en-IN');
-
-      allOrders[i].formattedDateTime = `${formattedTime}, ${formattedDate}`;
+      // const formattedDate = orderDate.toLocaleDateString('en-IN');
+       orderDate = new Date(allOrders[i].orderDate).toISOString().split('T')[0];
+   
+      allOrders[i].formattedDateTime = `${orderDate} , ${formattedTime}`;
+      // allOrders[i].formattedDateTime = `${formattedTime}, ${formattedDate}`;
       allOrders[i].totalInrAmount = allOrders[i].totalAmount.toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
     }
 
