@@ -4271,7 +4271,8 @@ p {
     }
 
     .header-8 .top-menu:not(.top-link-menu)>li {
-        padding-right: 2rem
+        padding-right: 2rem;
+        margin-left: 1rem;
     }
 
     .header-8 .top-menu:not(.top-link-menu)>li::after {

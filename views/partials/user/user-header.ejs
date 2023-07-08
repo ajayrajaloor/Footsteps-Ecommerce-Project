@@ -71,6 +71,110 @@
 }
 
 </style>
+<style>
+    /* Responsive styles for header search */
+.header-search-wrapper {
+    position: relative;
+    margin-top: 3rem;
+    margin-right: 2rem;
+}
+
+.header-search-wrapper input[type="search"] {
+    border-radius: 20px;
+    padding-left: 35px;
+}
+
+.header-search-wrapper .search-toggle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}
+
+/* Responsive styles for suggestion list */
+#suggestionList {
+    position: absolute;
+    border-radius: 10px;
+    z-index: 3;
+    background-color: #dee2e6;
+    margin-top: -15px;
+}
+
+/* Responsive styles using media queries */
+@media screen and (max-width: 767px) {
+    .header-search-wrapper {
+        margin-top: 1.5rem;
+        margin-right: 0;
+    }
+
+    .header-search-wrapper input[type="search"] {
+        width: 100%;
+    }
+}
+
+/* Default styles for header search */
+.header-search-wrapper input[type="search"] {
+    border-radius: 20px;
+    padding-left: 35px;
+    font-size: 16px; /* Add a default font size */
+    width: 200px; /* Add a default width */
+}
+
+/* Responsive styles for header search */
+@media screen and (max-width: 767px) {
+    .header-search-wrapper input[type="search"] {
+        width: 150px; /* Decrease width for smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-search-wrapper input[type="search"] {
+        width: 100px; /* Further decrease width for smaller screens */
+    }
+}
+
+
+</style>
+
+<style>
+    /* Default styles for header logo */
+.header-left .logo img {
+    border-radius: 1.4rem;
+    width: 160px; /* Add a default width */
+}
+
+/* Responsive styles for header logo */
+@media screen and (max-width: 767px) {
+    .header-left .logo img {
+        width: 120px; /* Decrease width for smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-left .logo img {
+        width: 80px; /* Further decrease width for smaller screens */
+    }
+}
+
+</style>
+
+<style>
+ @media screen and (max-width: 480px) {
+  .cart-count,
+  .wishlist-count {
+    font-size: 12px; /* Adjust the font size as needed */
+  }
+
+  .icon-shopping-cart,
+  .icon-heart-o {
+    font-size: 12px; /* Adjust the icon size as needed */
+    margin-right: 5px; /* Add margin to separate the icon from the count */
+  }
+}
+
+
+
+</style>
 
 </head>
 
@@ -190,28 +294,20 @@
                         </nav><!-- End .main-nav -->
 
                         <div>
-
                             <form action="#" method="post">
-                                <div class="header-search-wrapper" style="position: relative; margin-top: 3rem; margin-right: 2rem;">
+                                <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
-                                    <div style="position: relative;">
-                                        <input type="search" class="form-control"
-                                            style="border-radius: 20px; padding-left: 35px;" id="searchInput"
-                                            placeholder="Search in..." required autocomplete="off">
-                                        <a href="#" class="search-toggle" role="button"
-                                            style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px;">
+                                    <div>
+                                        <input type="search" class="form-control" id="searchInput" placeholder="Search in..." required autocomplete="off">
+                                        <a href="#" class="search-toggle" role="button">
                                             <i class="icon-search"></i>
                                         </a>
                                     </div>
                                 </div><!-- End .header-search-wrapper -->
-
                             </form>
-                            <ul style="position: absolute; border-radius: 10px; z-index: 3; background-color: #dee2e6; margin-top: -15px;"
-                                id="suggestionList">
-                            </ul>
-
+                            <ul id="suggestionList"></ul>
                         </div>
-
+                        
 
                         <div>
                             <ul class="top-menu">
@@ -284,7 +380,7 @@
                                 </li>
                             </ul>
                         </div>
-
+                        
 
                         <a href="/view-wishlist" class="wishlist-link">
                             <% if (locals.loginStatus) { %>

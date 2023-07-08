@@ -1,3 +1,21 @@
+<style>
+	.my-custom-container a.my-custom-button {
+	background-color: rgb(131, 190, 224);
+	color: white;
+	transition: background-color 0.3s;
+}
+
+.my-custom-container a.my-custom-button:hover {
+	background-color: rgb(149, 174, 207);
+	color: black;
+}
+
+.my-custom-container a.my-custom-button:hover i {
+	color: white;
+}
+
+</style>
+
 <main class="main">
 	<div class="page-header text-center" style="background-image: url('/user/assets/images/page-header-bg.jpg')">
 		<div class="container">
@@ -88,7 +106,7 @@
 					%>
 
 
-					<div class=" d-flex">
+					<div class=" d-flex my-custom-container">
 						<!-- <input type="text" name="couponCode" id="couponCode" style="width: 15%x; height: 45px;"
 							class="form-control" placeholder="coupon code"> -->
 
@@ -101,7 +119,7 @@
 							  
 
 						<a style="width: 50px; height: 45px; border: 1px solid black; text-align: center; padding-top: .7rem;"
-							onclick="applyCoupon('<%= totalAmount %>')" class=" btn-outline-primary " type="button">
+							onclick="applyCoupon('<%= totalAmount %>')" class="my-custom-button btn-outline-primary " type="button">
 							<i class="icon-long-arrow-right text-dark"></i> </a>
 					</div>
 					<span id="couponApplySuccess" class="text-success"></span>
