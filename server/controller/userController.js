@@ -329,7 +329,7 @@ const displayProducts = async (req, res, next) => {
         product[i].product_price = Number(product[i].product_price).toLocaleString('en-in', { style: 'currency', currency: 'INR' })
       }
 
-      res.render('users/userProduct', { product: product, loginStatus : req.session.user, cartCount, wishListCount,totalPages: Math.ceil(docCount / perPage),
+      res.render('users/userProduct', { product: products, loginStatus : req.session.user, cartCount, wishListCount,totalPages: Math.ceil(docCount / perPage),
       currentPage: page,
       perPage,products  })
 

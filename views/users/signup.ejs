@@ -131,7 +131,7 @@
     const password2 = document.getElementById("password2")
 
 
-    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    const usernameRegex = /^[a-zA-Z\s'_-]+$/;
     const emailRegX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const mobileRegex = /^\d{10}$/;
     const passRegX = /^.{6,}$/; // only lookup minimum 6 characters

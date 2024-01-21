@@ -166,7 +166,7 @@
 														<%= product[i].product_name %>
 													</a></h3><!-- End .product-title -->
 												<div class="product-price">
-													<%= product[i].product_price %>
+													₹ <%= product[i].product_price %>
 												</div>
 												<!-- End .product-price -->
 												<!-- <div class="ratings-container">
@@ -541,12 +541,13 @@
 		filterData(selectedCategories, min, max);
 	})
 
-	function filterData(selectedCategories, min, max) {
+	function filterData(selectedCategories, min, max, page = 1) {
 
 		let data = {
 			selectedCategories: selectedCategories,
 			min: min,
-			max: max
+			max: max,
+			page: page
 		}
 		data = JSON.stringify(data)
 		let html = ``;
